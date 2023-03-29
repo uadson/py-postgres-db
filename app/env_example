@@ -1,0 +1,4 @@
+dbname = 'postgres'
+dbuser = 'postgres'
+dbpasswd = 'postgres'
+dbhost = '127.0.0.1'
