@@ -1,4 +1,3 @@
-dbname = 'postgres'
-dbuser = 'postgres'
-dbpasswd = 'postgres'
-dbhost = '127.0.0.1'
+# postgres://user:secret@localhost:5432/mydatabasename
+
+database_url = 'postgresql://postgres:postgres@localhost:5432/postgres'

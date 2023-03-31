@@ -1,36 +1,18 @@
-import psycopg2
-from time import sleep
-from config import db
+import warnings
+from sqlalchemy.exc import SAWarning
+from sqlmodel.sql.expression import Select, SelectOfScalar
 
-def connect():
+warnings.filterwarnings("ignore", category=SAWarning)
+SelectOfScalar.inherit_cache = True
+Select.inherit_cache = True
 
-	conn = None
+from sqlmodel import create_engine, Session
+import models
+from config import database_url
 
-	try:
-		print("Connecting to the database PostgreSQL ...")
-		sleep(1.5)
-
-		conn = psycopg2.connect(**db)
-		cursor = conn.cursor()
-
-		print("Database Version")
-		sleep(1.5)
-		
-		cursor.execute('SELECT version()')
-		db_version = cursor.fetchone()
-		print(db_version)
-
-		cursor.close()
-	
-	except(Exception, psycopg2.DatabaseError) as error:
-		print(error)
-
-	finally:
-		if conn is not None:
-			conn.close()
-			print('Finished connection with database')
-			sleep(1.5)
+engine = create_engine(database_url, echo=False)
+models.SQLModel.metadata.create_all(engine)
 
 
-if __name__ == '__main__':
-	connect()
+def get_session():
+    return Session(engine)
